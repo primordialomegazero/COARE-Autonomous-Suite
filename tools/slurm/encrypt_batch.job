@@ -1,0 +1,8 @@
+#!/bin/bash
+#SBATCH --job-name=coare_encrypt
+#SBATCH --output=/tmp/coare_enc_%j.out
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=4
+#SBATCH --mem=64G
+#SBATCH --time=04:00:00
+srun curl -s -X POST http://localhost:8086/api -H "Content-Type: application/json" -d "{"operation":"encrypt","data":{"plaintext":"COARE_Node_$SLURM_NODEID"}}"

@@ -1,0 +1,8 @@
+#!/bin/bash
+#SBATCH --job-name=coare_benchmark
+#SBATCH --output=/tmp/coare_%j.out
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=01:00:00
+curl -s -X POST http://localhost:8086/api/self-test | tee /tmp/coare_result_$SLURM_JOB_ID.json
