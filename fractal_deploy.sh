@@ -8,7 +8,7 @@ echo "║  No Queues | No Congestion | Infinite Scale              ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 
 echo ""
-echo "[1/6] Deploying Fractal B5 Instances..."
+echo "[1/6] Deploying Fractal COARE Instances..."
 bash tools/fractal_scale.sh &
 
 echo "[2/6] Starting Fractal Auto-Heal..."
