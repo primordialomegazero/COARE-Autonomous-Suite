@@ -1,19 +1,23 @@
 heat_template_version: 2021-04-16
 description: COARE Autonomous Suite — DOST-ASTI Science Cloud
 resources:
-coare_sg:
-type: OS::Neutron::SecurityGroup
-properties:
-rules:
-
-protocol: tcp; port_range_min: 8086; port_range_max: 9000
-coare_instance:
-type: OS::Nova::Server
-properties:
-name: coare-autonomous
-flavor: m1.xlarge
-image: ubuntu-22.04
-user_data: |
-#!/bin/bash
-docker pull ghcr.io/primordialomegazero/coare-autonomous-suite:latest
-docker run -d -p 8086:8086 -p 9000:9000 --restart unless-stopped ghcr.io/primordialomegazero/coare-autonomous-suite:latest
+  coare_sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - protocol: tcp
+          port_range_min: 9000
+          port_range_max: 9000
+  coare_instance:
+    type: OS::Nova::Server
+    properties:
+      name: coare-autonomous
+      flavor: m1.xlarge
+      image: ubuntu-22.04
+      user_data: |
+        #!/bin/bash
+        docker pull ghcr.io/primordialomegazero/coare-autonomous-suite:latest
+        docker run -d -p 9000:9000 --restart unless-stopped ghcr.io/primordialomegazero/coare-autonomous-suite:latest
+outputs:
+  coare_api_url:
+    value: { get_attr: [coare_instance, first_address] }

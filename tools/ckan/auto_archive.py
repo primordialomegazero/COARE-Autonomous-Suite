@@ -2,28 +2,27 @@
 """AUTO-ARCHIVE — Autonomous CKAN Data Cataloger"""
 import requests, json, time, os
 
-B5 = "http://localhost:8086/api"
+COARE = "http://localhost:9000/api"
 
 def archive_loop():
     count = 0
     while True:
         try:
-            r = requests.post(f"{B5}/self-test").json()
-            tps = round(r.get('add_tps',0)/1e6,1)
-            trl = r.get('trl_assessment',{}).get('trl_level','?')
-            log = r.get('immutable_log',{}).get('n',0)
+            r = requests.get(f"{COARE}/self-test").json()
+            score = r.get('overall_score', 0)
+            status = r.get('overall_status', 'UNKNOWN')
+            security = r.get('security', {}).get('score', 0)
             
             count += 1
-            print(f"[{count:04d}] Archived | TPS:{tps}M | TRL:{trl} | Log:{log} entries")
+            print(f"[{count:04d}] Archived | Score:{score}/100 | Status:{status} | Security:{security}/100")
             
-            # Save to local archive
             with open(f"/tmp/coare_archive_{count:04d}.json", 'w') as f:
                 json.dump(r, f)
             
         except Exception as e:
             print(f"[ERROR] {e}")
         
-        time.sleep(300)  # Every 5 minutes
+        time.sleep(300)
 
 if __name__ == "__main__":
     print("AUTO-ARCHIVE — COARE Autonomous Data Cataloger")
