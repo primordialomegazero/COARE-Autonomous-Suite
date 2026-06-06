@@ -1,7 +1,8 @@
+# Contributing to COARE Autonomous Suite
 
-Contributing to COARE Autonomous Suite
-Development Setup
-bash
+## Development Setup
+
+```bash
 git clone https://github.com/primordialomegazero/COARE-Autonomous-Suite
 cd COARE-Autonomous-Suite
 mkdir build && cd build
@@ -13,15 +14,16 @@ bash
 docker build -t coare-ai:dev .
 docker run -d -p 9000:9000 coare-ai:dev
 Testing
+Full endpoint test:
+
 bash
-# Full endpoint test
 curl http://localhost:9000/api/status
 curl http://localhost:9000/api/ai/assess
 curl -X POST http://localhost:9000/api/auto-heal -H "Content-Type: application/json" -d '{}'
 Pull Request Guidelines
 Fork the repository
 
-Create feature branch
+Create a feature branch
 
 Submit PR with description
 
