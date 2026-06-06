@@ -53,3 +53,26 @@ License
 MIT — Free for government use. Full source available upon request.
 
 Steady lang. The suite does the work.
+
+## Fractal Edition — Recursive Autonomous Scaling
+
+All tools upgraded with recursive fractal architecture:
+
+- **Fractal SLURM** — φ-weighted job distribution, no queues
+- **Fractal Auto-Heal** — Recursive self-repair at multiple depths
+- **Fractal Auto-Scale** — φ-harmonic instance spawning, infinite scale
+- **Fractal Auto-Archive** — Continuous recursive cataloging
+- **Fractal One-Click** — Full recursive deployment
+
+### Fractal Deploy
+```bash
+bash fractal_deploy.sh
+Result
+text
+Fractal Node :8086 ✅
+Fractal Node :8087 ✅
+Fractal Node :8088 ✅
+Fractal Node :8089 ✅
+Fractal Node :8090 ✅
+Fractal Node :8091 ✅
+No queues. No congestion. Infinite scale.
