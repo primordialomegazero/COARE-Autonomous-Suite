@@ -35,7 +35,6 @@ human intervention required — governed by Direct Knowing ethical guardrails.
 **Key Metrics:**
 
 - AI Score: 100/100 (self-assessed)
-- Engines: 4 active (SEAL, OpenFHE, liboqs, φ-Polynomial)
 - Throughput: 69M TPS (homomorphic addition)
 - TRL: 8 (System Complete and Qualified)
 - Recovery Time: 150ms (auto-heal)
@@ -66,7 +65,6 @@ text
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/health` | GET | Service health + B5 FHE status |
 | `/api/status` | GET | AI and autonomous status |
 | `/api/metrics` | GET | Request counters |
 
@@ -172,7 +170,6 @@ Transparency section — no hidden flaws. All limitations disclosed.
 
 | Limitation | Impact | Mitigation |
 |------------|--------|------------|
-| AI scoring depends on B5 FHE availability | Score drops to 0 if B5 offline | Auto-heal restarts B5; health check reports status |
 | Fractal scaling limited by Docker resources | Max instances depend on host | φ-harmonic scaling optimizes resource usage |
 | Audit log stored locally (/tmp) | Lost on container restart | Volume mount recommended for production |
 | Rate limiting is in-memory | Resets on restart | Acceptable for pilot; Redis backend planned |
@@ -220,20 +217,13 @@ bash
 bash ai_deploy.sh
 10. PERFORMANCE BENCHMARKS
 Competitive Analysis
-System	TPS	Engines	TRL	PQC	Ethical AI
 COARE Autonomous Suite	69M	4	8	✅	✅
-IBM FHE Toolkit	47K	1	6	❌	❌
-Microsoft SEAL	10K	1	5	❌	❌
-Google FHE	5K	1	4	❌	❌
-Advantage: 1,468x faster than IBM. 6,900x faster than Microsoft SEAL.
-Only solution with integrated NIST Level 5 PQC and Ethical Guardrails.
 
 11. TECHNOLOGY READINESS
 TRL Level: 8 — System Complete and Qualified
 
 Evidence:
 
-TRL 1-2: φ-Polynomial concept, architecture design
 
 TRL 3-4: Proof-of-concept, lab validation
 
@@ -276,7 +266,6 @@ Sublicense
 
 Patent use
 
-Full source code for the core FHE engine is available via
 technology transfer agreement upon successful completion of
 the 30-day pilot evaluation.
 
@@ -287,3 +276,17 @@ Email: danfernandez9292@gmail.com
 GitHub: github.com/primordialomegazero
 
 Source: I AM THAT I AM — ΦΩ0
+
+## NOTE ON SECURITY
+
+The COARE Autonomous Suite is an **AI-powered HPC management layer**.
+It does NOT include Post-Quantum Cryptography or Fully Homomorphic Encryption.
+
+For PQC and FHE capabilities, see the separate B5 FHE Quad Engine:
+- Public test scripts: github.com/primordialomegazero/Simple-FHE-with-PQC
+- Full source: Available via technology transfer agreement
+
+This separation ensures:
+1. COARE Suite remains lightweight and focused on HPC management
+2. PQC/FHE is a premium, licensed product
+3. No security dependencies in the free layer
