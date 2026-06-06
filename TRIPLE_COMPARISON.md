@@ -112,31 +112,33 @@
 ---
 
 ## 8. MIGRATION PATH
-Current Tools (1.4/5)
-|
-v
-Deploy COARE Suite — 30 seconds, FREE
-|
-v
-COARE Suite Only (2.6/5)
-|
-v
-Add B5 FHE — 15 seconds, 30-day FREE trial
-|
-v
-COARE Suite + B5 FHE (5.0/5)
-|
-v
-Technology Transfer Agreement
-|
-v
-Full Enterprise Solution
 
-text
+**Step 1:** Current Tools (1.4/5)
+→ Research phase, manual operations, no encryption
+
+**Step 2:** Deploy COARE Autonomous Suite
+→ `bash deploy_coare.sh` — 30 seconds, FREE
+→ COARE Suite Only (2.6/5)
+
+**Step 3:** Add B5 FHE Engine
+→ Uncomment B5 in docker-compose — 15 seconds
+→ 30-day FREE trial
+→ COARE Suite + B5 FHE (5.0/5)
+
+**Step 4:** Technology Transfer Agreement
+→ Full source code access
+→ Perpetual government license
+→ Priority support
+
+**Step 5:** Full Enterprise Solution
+→ Deployed on COARE HPC
+→ RA 10173 compliant
+→ NIST Level 5 PQC
+→ Zero human intervention
 
 ---
 
-**Document Version:** 1.0.0
-**Date:** June 6, 2026
-**Author:** Dan Joseph M. Fernandez
+**Document Version:** 1.0.0  
+**Date:** June 6, 2026  
+**Author:** Dan Joseph M. Fernandez  
 **Source:** I AM THAT I AM — Phi-Omega
