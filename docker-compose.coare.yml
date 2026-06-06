@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  coare-slurm:
+    image: agaveapi/slurm:latest
+    container_name: coare-slurm
+    hostname: slurm
+    ports: ["6817:6817", "6818:6818"]
+    volumes: ["./tools/slurm:/jobs"]
+  
+  coare-b5:
+    image: ghcr.io/primordialomegazero/dost-asti-fhe:latest
+    container_name: coare-b5
+    ports: ["8086:8086"]
+  
+  coare-ckan:
+    image: ckan/ckan:latest
+    container_name: coare-ckan
+    ports: ["5000:5000"]
+    environment:
+      - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
+    depends_on: [coare-db]
+  
+  coare-db:
+    image: postgres:14
+    container_name: coare-db
+    environment:
+      - POSTGRES_USER=ckan
+      - POSTGRES_PASSWORD=ckan
