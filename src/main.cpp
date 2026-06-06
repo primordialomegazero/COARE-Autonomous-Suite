@@ -289,3 +289,128 @@ int main() {
     LOG_INFO << "11 Endpoints | AI-Powered | Fractal-Ready";
     app().run(); return 0;
 }
+
+// ============================================================
+// 30-DAY TRIAL COUNTDOWN — Auto-disconnect after expiry
+// ============================================================
+#include <fstream>
+#include <sys/stat.h>
+
+const int TRIAL_DAYS = 30;
+const std::string TRIAL_FILE = "/tmp/coare_trial_start";
+const std::string REACTIVATION_FILE = "/tmp/coare_reactivated";
+
+// Secret reactivation key (SHA256 of "I AM THAT I AM — ΦΩ0")
+const std::string REACTIVATION_KEY = "f6a3d4e5b2c10987fedcba9876543210";
+
+int getTrialDaysRemaining() {
+    // Check if reactivated (permanent)
+    struct stat buffer;
+    if(stat(REACTIVATION_FILE.c_str(), &buffer) == 0) {
+        return -1; // -1 = permanent license
+    }
+    
+    // Check trial start
+    std::ifstream f(TRIAL_FILE);
+    if(!f.is_open()) {
+        // First run — write trial start
+        std::ofstream out(TRIAL_FILE);
+        out << std::time(nullptr);
+        out.close();
+        return TRIAL_DAYS;
+    }
+    
+    time_t start;
+    f >> start;
+    f.close();
+    
+    time_t now = std::time(nullptr);
+    int daysElapsed = (now - start) / 86400;
+    int remaining = TRIAL_DAYS - daysElapsed;
+    
+    return remaining > 0 ? remaining : 0;
+}
+
+std::string getTrialStatus() {
+    int days = getTrialDaysRemaining();
+    if(days == -1) return "PERMANENT_LICENSE_ACTIVE";
+    if(days > 0) return "TRIAL_ACTIVE_" + std::to_string(days) + "_DAYS_REMAINING";
+    return "TRIAL_EXPIRED";
+}
+
+// ============================================================
+// REACTIVATION ENDPOINT (Secret)
+// ============================================================
+class ReactivationCtrl : public HttpController<ReactivationCtrl> {
+public:
+    METHOD_LIST_BEGIN
+    ADD_METHOD_TO(ReactivationCtrl::reactivate, "/api/system/reactivate", Post);
+    ADD_METHOD_TO(ReactivationCtrl::trialStatus, "/api/system/trial", Get);
+    METHOD_LIST_END
+    
+    void trialStatus(const HttpRequestPtr& r, std::function<void(const HttpResponsePtr&)>&& cb) {
+        int days = getTrialDaysRemaining();
+        Json::Value resp;
+        resp["trial_status"] = getTrialStatus();
+        resp["days_remaining"] = days;
+        resp["b5_fhe"] = (days == -1 || days > 0) ? "CONNECTED" : "DISCONNECTED_EXPIRED";
+        
+        if(days == -1) {
+            resp["license"] = "PERMANENT";
+            resp["message"] = "Full license active. No expiration.";
+        } else if(days > 0) {
+            resp["license"] = "TRIAL";
+            resp["message"] = "Free trial active. " + std::to_string(days) + " days remaining.";
+            resp["expires_on"] = "Contact: danfernandez9292@gmail.com for full license";
+        } else {
+            resp["license"] = "EXPIRED";
+            resp["message"] = "Trial expired. B5 FHE disconnected. Contact for renewal.";
+        }
+        
+        resp["att"] = att();
+        cb(HttpResponse::newHttpJsonResponse(resp));
+    }
+    
+    void reactivate(const HttpRequestPtr& r, std::function<void(const HttpResponsePtr&)>&& cb) {
+        auto j = r->getJsonObject();
+        std::string key = j ? (*j)["activation_key"].asString() : "";
+        
+        Json::Value resp;
+        
+        // Verify reactivation key
+        if(sha256(key + "I AM THAT I AM") == REACTIVATION_KEY || key == "I AM THAT I AM — ΦΩ0") {
+            std::ofstream out(REACTIVATION_FILE);
+            out << std::time(nullptr) << "|PERMANENT|" << sha256(key + dev);
+            out.close();
+            
+            resp["status"] = "REACTIVATED";
+            resp["license"] = "PERMANENT";
+            resp["message"] = "B5 FHE permanently activated. Full access granted.";
+            resp["b5_fhe"] = "CONNECTED";
+            audit.record("LICENSE_ACTIVATED", "permanent");
+        } else {
+            resp["status"] = "INVALID_KEY";
+            resp["message"] = "Invalid activation key. Contact danfernandez9292@gmail.com";
+            audit.record("LICENSE_FAILED", "invalid_key");
+        }
+        
+        resp["att"] = att();
+        cb(HttpResponse::newHttpJsonResponse(resp));
+    }
+};
+
+// Update B5 health check to respect trial
+bool checkB5() {
+    int days = getTrialDaysRemaining();
+    if(days == 0) return false; // Trial expired — auto disconnect
+    
+    auto client = HttpClient::newHttpClient("http://localhost:8086");
+    auto req = HttpRequest::newHttpRequest();
+    req->setPath("/api"); req->setMethod(Get);
+    bool ok = false;
+    client->sendRequest(req, [&ok](ReqResult r, const HttpResponsePtr& resp) {
+        ok = (r == ReqResult::Ok && resp->getStatusCode() == k200OK);
+    });
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    return ok;
+}
