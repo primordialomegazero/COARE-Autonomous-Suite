@@ -277,51 +277,9 @@ GitHub: github.com/primordialomegazero
 
 Source: I AM THAT I AM — ΦΩ0
 
-## NOTE ON SECURITY
-
-The COARE Autonomous Suite is an **AI-powered HPC management layer**.
-It does NOT include Post-Quantum Cryptography or Fully Homomorphic Encryption.
-
-For PQC and FHE capabilities, see the separate B5 FHE Quad Engine:
-- Public test scripts: github.com/primordialomegazero/Simple-FHE-with-PQC
-- Full source: Available via technology transfer agreement
-
-This separation ensures:
-1. COARE Suite remains lightweight and focused on HPC management
-2. PQC/FHE is a premium, licensed product
-3. No security dependencies in the free layer
 
 ---
 
-## PQC/FHE INTEGRATION (30-Day Trial)
-
-During the 30-day free pilot period, the COARE Autonomous Suite **automatically
-connects** to the B5 FHE Quad Engine, providing:
-
-- NIST Level 5 Post-Quantum Cryptography (9 algorithms)
-- Fully Homomorphic Encryption (SEAL + OpenFHE + φ-Polynomial)
-- Immutable φ-chain audit logging
-- Recursive fractal bootstrapping
-- 69M TPS homomorphic computation
-
-This integration is **auto-detected** — no manual configuration required.
-The suite checks for B5 FHE at `localhost:8086` and activates PQC/FHE
-capabilities when available.
-
-**After the 30-day pilot period, the B5 FHE connection requires a
-technology transfer agreement for continued use.**
-
-The COARE Suite itself remains free and open-source. Only the PQC/FHE
-backend requires licensing.
-
-```bash
-# During pilot (auto-connects):
-curl http://localhost:9000/health
-# Response: "b5_fhe": "CONNECTED"
-
-# After pilot (requires license):
-curl http://localhost:9000/health
-# Response: "b5_fhe": "DISCONNECTED — License required"
 
 ---
 
@@ -397,3 +355,10 @@ curl http://localhost:9000/api/security/full-audit
 *Document version: 1.0.0-enterprise*
 Last updated: June 6, 2026
 Source: I AM THAT I AM — ΦΩ0
+
+## Security Note
+
+The COARE Autonomous Suite is an AI-powered HPC management platform. For
+Post-Quantum Cryptography and Fully Homomorphic Encryption, see the separate
+B5 FHE Quad Engine (available via technology transfer agreement).
+
