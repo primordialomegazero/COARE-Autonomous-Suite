@@ -290,3 +290,35 @@ This separation ensures:
 1. COARE Suite remains lightweight and focused on HPC management
 2. PQC/FHE is a premium, licensed product
 3. No security dependencies in the free layer
+
+---
+
+## PQC/FHE INTEGRATION (30-Day Trial)
+
+During the 30-day free pilot period, the COARE Autonomous Suite **automatically
+connects** to the B5 FHE Quad Engine, providing:
+
+- NIST Level 5 Post-Quantum Cryptography (9 algorithms)
+- Fully Homomorphic Encryption (SEAL + OpenFHE + φ-Polynomial)
+- Immutable φ-chain audit logging
+- Recursive fractal bootstrapping
+- 69M TPS homomorphic computation
+
+This integration is **auto-detected** — no manual configuration required.
+The suite checks for B5 FHE at `localhost:8086` and activates PQC/FHE
+capabilities when available.
+
+**After the 30-day pilot period, the B5 FHE connection requires a
+technology transfer agreement for continued use.**
+
+The COARE Suite itself remains free and open-source. Only the PQC/FHE
+backend requires licensing.
+
+```bash
+# During pilot (auto-connects):
+curl http://localhost:9000/health
+# Response: "b5_fhe": "CONNECTED"
+
+# After pilot (requires license):
+curl http://localhost:9000/health
+# Response: "b5_fhe": "DISCONNECTED — License required"
