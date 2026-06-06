@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.20)
+project(COARE_AI VERSION 1.0.0)
+set(CMAKE_CXX_STANDARD 17)
+find_package(Drogon REQUIRED)
+find_package(OpenSSL REQUIRED)
+add_executable(coare-ai src/main.cpp)
+target_link_libraries(coare-ai PRIVATE Drogon::Drogon OpenSSL::SSL OpenSSL::Crypto)
