@@ -1,0 +1,1 @@
+        int realCount=0; FILE* pp=popen("docker ps --filter name=coare -q 2>/dev/null ;

@@ -1,0 +1,1 @@
+        int realCount=0; auto pipe=popen("docker ps --filter name=coare-d -q 2>/dev/null ;
